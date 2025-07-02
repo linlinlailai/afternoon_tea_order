@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>下午茶點餐系統</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    img.menu {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+    }
+    h2 {
+      margin-top: 30px;
+    }
+    .person-block {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .inputs {
+      margin-left: 10px;
+    }
+    .input-row {
+      margin: 4px 0;
+    }
+    .summary {
+      background: #eef;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    @media screen and (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+  <script>
+    function addInput(button, type) {
+      const container = button.parentElement.parentElement;
+      const newRow = document.createElement("div");
+      newRow.classList.add("input-row");
+      newRow.innerHTML = '<input type="text" class="' + type + '" /> <button onclick="addInput(this, \'' + type + '\')">➕</button>';
+      container.appendChild(newRow);
+    }
+
+    function updateSummary() {
+      const allFoodInputs = document.querySelectorAll(".food");
+      const allDrinkInputs = document.querySelectorAll(".drink");
+
+      const foodMap = {};
+      const drinkMap = {};
+
+      allFoodInputs.forEach(input => {
+        const val = input.value.trim();
+        if (val) foodMap[val] = (foodMap[val] || 0) + 1;
+      });
+
+      allDrinkInputs.forEach(input => {
+        const val = input.value.trim();
+        if (val) drinkMap[val] = (drinkMap[val] || 0) + 1;
+      });
+
+      document.getElementById("summary-foods").innerHTML =
+        "<strong>🍱 食物：</strong><br>" +
+        Object.entries(foodMap).map(([k, v]) => `${k} x${v}`).join("<br>");
+
+      document.getElementById("summary-drinks").innerHTML =
+        "<strong>🧋 飲料：</strong><br>" +
+        Object.entries(drinkMap).map(([k, v]) => `${k} x${v}`).join("<br>");
+    }
+
+    document.addEventListener("input", updateSummary);
+  </script>
+</body>
+</html>
+  
+  
+  
+<body>
+  <h1>下午茶點餐系統</h1>
+  <img src="menu.jpg" class="menu" alt="菜單圖片" />
+
+
+  <div id="order-section">
+    <div class="person-block" data-name="Arvin">
+      <strong>Arvin</strong><br>
+      食物：
+      <div class="inputs food-inputs">
+        <div class="input-row">
+          <input type="text" class="food" />
+          <button onclick="addInput(this, 'food')">➕</button>
+        </div>
+      </div>
+      飲料：
+      <div class="inputs drink-inputs">
+        <div class="input-row">
+          <input type="text" class="drink" />
+          <button onclick="addInput(this, 'drink')">➕</button>
+        </div>
+      </div>
+    </div>
+    <div class="summary">
+      <h2>統計結果</h2>
+      <div id="summary-foods"><strong>🍱 食物：</strong></div>
+      <div id="summary-drinks"><strong>🧋 飲料：</strong></div>
+    </div>
+  </div>
+  
+  
